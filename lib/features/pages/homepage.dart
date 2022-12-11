@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_snake_game/features/pages/game_over.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -114,6 +115,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void restartGame() {
+    print("Enter into restart");
     isGameOver = false;
     score = 0;
     snakePosition = [];
@@ -125,27 +127,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     initializeSnake();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await dialogueOpen();
-    });
-  }
-
-  dialogueOpen() {
-    AwesomeDialog(
-      context: context,
-      animType: AnimType.scale,
-      dialogType: DialogType.info,
-      body: const Center(
-        child: Text(
-          'Welcome Again!',
-          style: TextStyle(fontStyle: FontStyle.italic),
-        ),
-      ),
-      title: 'Start the Game',
-      btnOkOnPress: () {
-        startGame();
-      },
-    ).show();
   }
 
   @override
@@ -172,6 +153,11 @@ class _HomePageState extends State<HomePage> {
         setState(() {});
       },
       child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.green,
+          title: const Text("Snack Game"),
+        ),
         backgroundColor: Colors.grey.shade300,
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -181,8 +167,12 @@ class _HomePageState extends State<HomePage> {
               Container(
                 decoration: BoxDecoration(
                   color: Colors.green,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(
+                    10,
+                  ),
+                  border: Border.all(
+                    color: Colors.grey,
+                  ),
                 ),
                 padding: const EdgeInsets.all(8),
                 child: GridView.builder(
@@ -205,49 +195,47 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //   children: [
-              //     Text(
-              //       "Score : $score",
-              //       style: const TextStyle(
-              //         color: Colors.white,
-              //         fontSize: 18,
-              //         fontWeight: FontWeight.bold,
-              //       ),
-              //     ),
-              //     isGameRunning
-              //         ? const SizedBox()
-              //         : InkWell(
-              //             onTap: () {
-              //               startGame();
-              //             },
-              //             child: const Text(
-              //               "Start Game",
-              //               style: TextStyle(
-              //                 color: Colors.white,
-              //                 fontSize: 18,
-              //                 fontWeight: FontWeight.bold,
-              //               ),
-              //             ),
-              //           ),
-              //     isGameOver
-              //         ? InkWell(
-              //             onTap: () {
-              //               restartGame();
-              //             },
-              //             child: const Text(
-              //               "Restart Game",
-              //               style: TextStyle(
-              //                 color: Colors.white,
-              //                 fontSize: 18,
-              //                 fontWeight: FontWeight.bold,
-              //               ),
-              //             ),
-              //           ),
-
-              //   ],
-              // )
+              const SizedBox(
+                height: 40,
+              ),
+              isGameRunning
+                  ? Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      height: 50,
+                      width: 100,
+                      child: Text(
+                        "Score $score",
+                        style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        startGame();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        height: 50,
+                        width: 100,
+                        child: const Text(
+                          "Start",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+                    )
             ],
           ),
         ),
@@ -266,11 +254,11 @@ class Box extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.green,
         border: Border.all(
-          width: 0,
-          color: Colors.green,
+          width: 1,
+          color: Colors.grey.shade300,
         ),
         borderRadius: BorderRadius.circular(
-          0,
+          8,
         ),
       ),
     );
@@ -282,7 +270,14 @@ class Food extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.red);
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.circular(
+          8,
+        ),
+      ),
+    );
   }
 }
 
@@ -294,7 +289,12 @@ class Snake extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.circular(
+          8,
+        ),
+      ),
     );
   }
 }
